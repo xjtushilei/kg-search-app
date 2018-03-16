@@ -1,5 +1,6 @@
 package com.xjtushilei.kgsearch;
 
+import com.xjtushilei.kgsearch.mapper.YottaMapper;
 import com.xjtushilei.kgsearch.service.ESService;
 import com.xjtushilei.kgsearch.service.YottaService;
 import org.junit.Test;
@@ -20,9 +21,22 @@ public class KgSearchApplicationTests {
     @Autowired
     YottaService yottaService;
 
+    @Autowired
+    YottaMapper yottaMapper;
+
     @Test
     public void test1() throws IOException {
         esService.indexFragments(yottaService.getAllByClassName("计算机组成原理"));
+    }
+
+    @Test
+    public void test2() {
+        yottaMapper.findTermNameByClassName("计算机组成原理").forEach(s -> System.out.println(s));
+    }
+
+    @Test
+    public void test3() throws IOException {
+        esService.indexTreeDara(yottaService.getAllTermNameByClassName("计算机组成原理")).forEach(s -> System.out.println(s));
     }
 
 }

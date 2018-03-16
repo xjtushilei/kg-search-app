@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class testAll {
+public class TestAll {
 
     @Autowired
     YottaService yottaService;
@@ -25,4 +25,5 @@ public class testAll {
     public String test2() {
         return ESConfig.host;
     }
+
 }

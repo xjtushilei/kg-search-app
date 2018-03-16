@@ -23,5 +23,10 @@ public interface YottaMapper {
     @Select("SELECT count(FragmentID) FROM assemble_fragment where ClassName=#{className}")
     long countByClassName(String className);
 
+    @Select("SELECT TermName FROM domain_topic where ClassName=#{className}")
+    List<String> findTermNameByClassName(String className);
+
+    @Select("SELECT DISTINCT ClassName FROM assemble_fragment")
+    List<String> findAllClassName();
 
 }
