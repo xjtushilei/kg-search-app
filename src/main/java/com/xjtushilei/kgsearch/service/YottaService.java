@@ -17,4 +17,23 @@ public class YottaService {
         PageHelper.startPage(pageNum, pageSize);
         return yottaMapper.findAll();
     }
+
+    public List<AssembleFragment> getAllByClassName(String className, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        return yottaMapper.findAllByClassName(className);
+    }
+
+    public List<AssembleFragment> getAllByClassName(String className) {
+        return yottaMapper.findAllByClassName(className);
+    }
+
+    public long countAll() {
+        return yottaMapper.count();
+    }
+
+    public long countByClassName(String className) {
+        return yottaMapper.countByClassName(className);
+    }
+
+
 }

@@ -14,8 +14,14 @@ public interface YottaMapper {
     @Select("SELECT * FROM assemble_fragment order by FragmentID")
     List<AssembleFragment> findAll();
 
+    @Select("SELECT * FROM assemble_fragment where ClassName=#{className} order by FragmentID ")
+    List<AssembleFragment> findAllByClassName(String className);
+
     @Select("SELECT count(FragmentID) FROM assemble_fragment")
     long count();
+
+    @Select("SELECT count(FragmentID) FROM assemble_fragment where ClassName=#{className}")
+    long countByClassName(String className);
 
 
 }
