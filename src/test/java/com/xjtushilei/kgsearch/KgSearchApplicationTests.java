@@ -1,7 +1,7 @@
 package com.xjtushilei.kgsearch;
 
 import com.xjtushilei.kgsearch.mapper.YottaMapper;
-import com.xjtushilei.kgsearch.service.ESService;
+import com.xjtushilei.kgsearch.service.ESIndexService;
 import com.xjtushilei.kgsearch.service.YottaService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import java.io.IOException;
 public class KgSearchApplicationTests {
 
     @Autowired
-    ESService esService;
+    ESIndexService esService;
 
     @Autowired
     YottaService yottaService;

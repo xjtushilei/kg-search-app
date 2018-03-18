@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ESService {
+public class ESIndexService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -33,7 +33,7 @@ public class ESService {
             int i = 0;
             for (; i < 500 && index < list.size(); i++, index++) {
                 AssembleFragment fragment = list.get(index);
-                request.add(new IndexRequest("kg-search", "fragments", String.valueOf(fragment.getFragmentID()))
+                request.add(new IndexRequest("kg-search-fragments", "fragments", String.valueOf(fragment.getFragmentID()))
                         .source(JsonUtils.toJson(fragment), XContentType.JSON));
             }
             request.timeout(TimeValue.timeValueMinutes(5));
@@ -46,9 +46,14 @@ public class ESService {
                 e.printStackTrace();
                 String info = "error-第" + ((index - 1) / 500 + 1) + "批-end-indexFragments-数量:" + i;
                 result.add(info);
-                logger.error(info, e);
+                logger.error(e.getMessage() + info, e);
 
             }
+        }
+        try {
+            client.close();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
         }
         return result;
     }
@@ -71,11 +76,13 @@ public class ESService {
             BulkRequest request = new BulkRequest();
             int i = 0;
             for (; i < 20 && index < list.size(); i++, index++) {
-                Map<String, String> oneTree = list.get(i);
+                Map<String, String> oneTree = list.get(index);
                 String ClassName = oneTree.get("ClassName");
                 String TermName = oneTree.get("TermName");
                 String data = oneTree.get("data");
-                request.add(new IndexRequest("kg-search", "tree", ClassName + TermName)
+                String id = String.valueOf((ClassName + TermName).hashCode());
+
+                request.add(new IndexRequest("kg-search-tree", "tree", id)
                         .source(data, XContentType.JSON));
             }
             request.timeout(TimeValue.timeValueMinutes(5));
@@ -87,12 +94,16 @@ public class ESService {
             } catch (IOException e) {
                 e.printStackTrace();
                 info = "error-第" + ((index - 1) / 20 + 1) + "批-end-indexTree-数量:" + i;
-                logger.error(info, e);
+                logger.error(e.getMessage() + info, e);
                 result.add(info);
             }
         }
+        try {
+            client.close();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
         return result;
     }
-
 
 }
